@@ -3,6 +3,7 @@
 \usepackage{fullpage}
 \usepackage{graphicx}
 \usepackage{latexsym}
+\usepackage{hyperref}
 
 
 \renewcommand{\baselinestretch}{1.2}
@@ -180,65 +181,27 @@ whether Z is a shuffle of X and Y.
 should
 be Boolean, not numeric.
 
-
+\vfill
+\newpage
 \addtocounter{problemctr}{1}
 \bigskip
 \noindent
 $\underline{\rm Problem\ \theproblemctr}$\pp
-We play the following game once. 
-
-I have two distinct integers. I have chosen then \emph{arbitrarily}. 
-I flip a coin. On heads I show you the larger number. On tails, I show you the smaller number. You don't see the coin flip--just a single integer. Your task is to guess whether you've seen the larger number or the smaller number.
-You need to be correct with probability strictly greater than $1/2$. 
-
-This problem seems impossible, doesn't it? Remarkably it is solvable. 
-
-
-\iffalse
-
-
-\addtocounter{problemctr}{1}
-\bigskip
 \noindent
-$\underline{\rm Problem\ \theproblemctr}$\pp {\em From Cormen,
-Leiserson, Rivest,page 315\/}\pp Give an $O(n^2)$-time algorithm
-to find the longest monotonically increasing subsequence of a
-sequence of $n$ numbers.
+Here is the strategy:
 
+Call the number you saw "$x$". Use the logistic function to calculate $p(x)=1/(1+e^{-x})$. Choose a random real number between $0$ and $1$. If it's lower than $p(x)$, guess "higher". Otherwise, guess "lower".
 
-%  \medskip
-\addtocounter{problemctr}{1}
+In other words, guess "higher" with probability $p(x)$, and "lower" with probability $1-p(x)$.
+
+This works because $p(x)$ is a function which is $0$ at negative infinity, $1$ at positive infinity, and increases monotonically in between. So for any pair of numbers, if you call the smaller one A and the larger one B, you have a (slightly) better chance of guessing “higher” if you saw B than if you saw A. Your overall chances of guessing correctly — given that there is a $50\%$ chance you’re seeing A and a $50\%$ chance you’re seeing B are:
+
+$P = 0.5 * (1-p(A)) + 0.5 * p(B)$
+
+Since $p(A)$ is always smaller than $p(B)$, $P$ is always greater than $50\%$. 
+
 \bigskip
-\noindent
-$\underline{\rm Problem\ \theproblemctr}$\pp
-{\em From Cormen,
-Leiserson, Rivest
- (Extra Credit)\/}\pp
-Give an $O(n \log n)$-time algorithm to find the longest
-monotonically increasing subsequence of a sequence of $n$ numbers.
-({\em Hint:\/} Observe that the last element of a candidate
-subsequence of length $i$ is at least as large as the last element
-of a candidate subsequence of length $i - 1$. Maintain candidate
-subsequences by linking them through the input sequence.)\\
-
-
-\fi
-
-\iffalse
-
-\addtocounter{problemctr}{1}
-\bigskip
-\noindent
-$\underline{\rm Problem\ \theproblemctr}$\pp
-\pp
-In a small stadium there are several thousand people in the stands. Devise a
-distributed algorithm enabling the audience to count itself. Do not assume any
-particular geometry of the stadium, except, if you want, that it is bowl shaped.
-Explicitly state your assumptions, then present your algorithm and analysis.
-
-
-\fi
-
+Reference: \url{http://blog.xkcd.com/2010/02/09/math-puzzle}
 
 
 \end{document}
