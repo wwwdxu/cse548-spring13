@@ -1,0 +1,172 @@
+\documentclass[11pt]{article}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\renewcommand{\baselinestretch}{1.2}
+\setlength{\topmargin}{-0.5in}
+\setlength{\textwidth}{6.5in}
+\setlength{\oddsidemargin}{0.0in}
+\setlength{\textheight}{9.1in}
+
+\newlength{\pagewidth}
+\setlength{\pagewidth}{6.5in}
+\pagestyle{empty}
+
+\def\pp{\par\noindent}
+
+\special{papersize=8.5in,11in}
+
+\begin{document}
+\centerline{\bf please grade}
+\medskip
+\hrule
+\bigskip
+\centerline{\bf CSE 548 -- Analysis of Algorithms, Spring 2013}
+\medskip
+\centerline{Assignment \#2b}
+\medskip
+\centerline{Duo Xu (\#108662210)}
+\medskip
+\centerline{partner: Yu-Yao Lin (\#109090793)}
+\bigskip
+\bigskip
+
+\newcounter{problemctr}
+
+\addtocounter{problemctr}{6}
+\bigskip
+\noindent
+$\underline{\rm Problem\ \theproblemctr}$\pp
+
+\noindent
+(a) Multiplication of two $n$-bit numbers is the same as addition of $n$ $(2n-1)$-bit numbers. As the same idea of merge sort, every time we do addition two by two. So in total there are $\log n$ levels. Because in each level we do addition of $O(n)$-bit numbers two by two, the depth in each level is $O(\log n)$. So totally, this design has depth of $O(\log^2 n)$.
+
+The size of addition circuits of two $n$-bit numbers is $\Theta(n^{\log 3})$, in all the levels we do $(n+\frac{n}{2}+\frac{n}{4}+...+1)$ times of addition, so the size of this design is $\Theta(n^{1+\log 3})$.
+
+\begin{figure}[htpb]
+\centering
+\includegraphics[width=.6\columnwidth]{h2b6}
+\caption{Circuits for multiplying by Yu-Yao Lin}
+\end{figure}
+
+\noindent
+(b) Multiplication of two $n$-bit numbers is the same as addition of $n$ $(2n-1)$-bit numbers. As the same idea of merge sort, every time we do addition two by two. So in total there are $\log n$ levels. In each level we do addition of $O(n)$-bit numbers two by two. However, the depth in each level is $O(1)$. So totally, this design has depth of $O(\log n)$.
+
+The size of addition circuits of two $n$-bit numbers is $\Theta(n)$, in all the levels we do $(n+\frac{n}{2}+\frac{n}{4}+...+1)$ times of addition, so the size of this design is $\Theta(n^2)$.
+
+\vfill
+\newpage
+\addtocounter{problemctr}{1}
+\bigskip
+\noindent
+$\underline{\rm Problem\ \theproblemctr}$\pp
+
+\noindent
+(a) Refer to the problem 5 of problem set 1, the algorithm is that:
+
+We change $a_n a_{n-1} a_{n-2} ... a_1 * b_n b_{n-1} b_{n-2} ... b_1$ to the form of $(a_{\frac{n}{2}} a_{\frac{n}{2}-1} ... a_1 + a_n a_{n-1} a_{n-2} ... a_{\frac{n}{2}+1} * i) * (b_{\frac{n}{2}} b_{\frac{n}{2}-1} ... b_1 + b_n b_{n-1} b_{n-2} ... b_{\frac{n}{2}+1} * i)$, where $i = 1<<\frac{n}{2}$. This is just the same format as $(a+bi)(c+di)$ in the problem 5 of problem set 1.
+
+Thus we need to compute $(a+b)(c+d)$, $ac$ and $bd$. Each of them are the multiplication of two $\frac{n}{2}$-bit numbers. We can see that the size is reduced half. So we do it recursively and the base case is the multiplication of two 1-bit numbers.
+
+The recurrence relation for depth is $T(n) = T(n/2) + 1$, so the depth of this design is $O(\log n)$
+
+
+\bigskip
+\bigskip
+\noindent
+(b) $S(n) = 3S(n/2)+n$
+	
+	$S(1) = 1$
+
+\bigskip
+\bigskip
+\noindent
+(c) $S(n) = 3S(n/2)+n$
+
+\hspace{1.0 cm}$= 3(3S(n/4)+n/2)+n$
+
+\hspace{1.0 cm}$= 3^2S(n/4)+\frac{3}{2}n+n$ 
+
+\hspace{1.0 cm}$= 3^3S(n/8)+\frac{3^2}{2^2}n+\frac{3}{2}n+n$
+
+\hspace{1.5 cm} \vdots
+
+\hspace{1.0 cm}$= 3^{\log n}+\frac{3}{2}^{\log n-1}n+\frac{3}{2}^{\log n-2}n+...+\frac{3}{2}^{2}n+\frac{3}{2}n+n$
+
+\hspace{1.0 cm}$= \Theta(3^{\log n})$
+
+\hspace{1.0 cm}$= \Theta(n^{\log 3})$
+
+\hspace{1.0 cm}$= o(n^2)$
+
+
+\vfill
+\newpage
+\addtocounter{problemctr}{1}
+\bigskip
+\noindent
+$\underline{\rm Problem\ \theproblemctr}$\pp
+
+\noindent
+When the lieutenant begins the firing process, we define a rule that:
+
+1. Assume the information pass speed is $1$ person/second.
+
+2. If you are the first time to hear from your neighbor (either left or right), you pass it to your another neighbor at once.
+
+3. If you are the second time to hear from your neighbor (either left or right), you wait $2$ second, then pass it to your another neighbor. We assume that the lieutenant wait $2$ second after he first passes information to his right soldier.
+
+The reason why I define the above rule is to make sure the fast information passing is $3$ times the speed of the slow information passing so that they can meet at the middle of the array.
+
+Then this problem is split into two small arrays.
+
+We define the two soldiers at the middle of the array as the start soldier of each half array and do the information passing as the first round.
+
+As they move and interact at exactly the same speed, we can assume that each sub array is splitting simultaneously.
+
+This is a kind of divide and conquer, and the base case is only $1$ soldier. Then all soldiers start firing.
+
+The recurrence relation is $T(n) = T(n/2)+O(n)$
+
+This algorithm is $O(n)$ running time.
+
+\begin{figure}[htpb]
+\centering
+\includegraphics[width=.6\columnwidth]{h2b8}
+\caption{Example by Yu-Yao Lin}
+\end{figure}
+
+\vfill
+\newpage
+\addtocounter{problemctr}{1}
+\bigskip
+\noindent
+$\underline{\rm Problem\ \theproblemctr}$\pp
+
+\noindent
+Assume we have $n-1$ checkers.
+
+1. If we place a checker on a piece where the Manhattan distance is larger than $2$ from an existing rectangle on the board, or we place it on an empty board, it means we create a new $1*1$ rectangle.
+
+2. If we place a checker which the Manhattan distance between the piece and an existing rectangle (size is $a*b$) is less or equal to $2$, we can create a new bigger rectangle based on the neighbor filling rule, the size of which would be $a*(b+1), a*(b+2), (a+1)*b, (a+2)*b$ or $(a+1)*(b+1)$. We name the size of the new rectangle is $c*d$, and we find that $c+d \le a+b+2$.
+
+From the above two checker placement strategies, we can find that the first strategy creates a rectangle of perimeter 4 and the second strategy increases the perimeter by at most 4.
+
+If two rectangle can form a bigger rectangle, then the perimeter of the new rectangle is at most the sum of the two original ones.
+
+So we can conclude that every time we place a checker on the board, we can increase the perimeter by at most 4.
+
+If we have $n-1$ chekcers, the final covered rectangle would have perimeter of at most $4(n-1)$.
+
+However, the whole checkerboard's perimeter is $4n$, thus we cannot cover the board by using only $n-1$ checkers.
+
+\begin{figure}[htpb]
+\centering
+\includegraphics[width=.6\columnwidth]{checkerboard}
+\caption{Perimeter increases by at most 4 by Yu-Yao Lin}
+\end{figure}
+
+\bigskip
+Reference: \url{http://chaoxuprime.com/2011/12/fill-a-checkerboard}
+
+\end{document}

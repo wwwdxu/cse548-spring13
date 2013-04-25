@@ -1,0 +1,244 @@
+\documentclass[11pt]{article}
+ \usepackage{epsfig}
+\usepackage{fullpage}
+\usepackage{graphicx}
+\usepackage{latexsym}
+
+
+\renewcommand{\baselinestretch}{1.2}
+\setlength{\topmargin}{-0.5in}
+\setlength{\textwidth}{6.5in}
+\setlength{\oddsidemargin}{0.0in}
+\setlength{\textheight}{9.1in}
+
+\newlength{\pagewidth}
+\setlength{\pagewidth}{6.5in}
+\pagestyle{empty}
+
+\def\pp{\par\noindent}
+
+\special{papersize=8.5in,11in}
+
+
+\begin{document}
+\centerline{\bf please grade}
+\medskip
+\hrule
+\bigskip
+\centerline{\bf CSE 548 -- Analysis of Algorithms, Spring 2013}
+\medskip
+\centerline{Assignment \#2c}
+\medskip
+\centerline{Duo Xu (\#108662210)}
+\medskip
+\centerline{partner: Yu-Yao Lin (\#109090793)}
+\bigskip
+\bigskip
+
+
+\newcounter{problemctr}
+
+\addtocounter{problemctr}{10}
+\bigskip
+\noindent
+$\underline{\rm Problem\ \theproblemctr}$\pp
+\noindent 
+(1) Subproblems:
+
+for $k = 0$ to $K$
+
+\hspace{.5 cm} for $i = 1$ to $n$
+
+\hspace{1 cm} Solve the knapsack problem for target integer $k$ and set $\{s_1, s_2, \cdots, s_i \}$. 
+
+\bigskip
+
+Pseudocode:
+
+$B[0,0] = 1$
+
+for $k = 1$ to $K$
+
+\hspace{.5 cm} $B[0,k] = 0$
+
+for $i = 1$ to $n$
+
+\hspace{.5 cm} for $k = 0$ to $K$
+
+\hspace{1 cm} $B[i, k] = B[i-1, k] \vee B[i-1, k-s_i]$
+
+return $B[n, K]$
+
+
+\bigskip
+\bigskip
+\noindent 
+(2) After filling out B, we can backtrack to find one possible set T.
+
+Pseudocode:
+
+$T = []$
+
+if $(B[n, K] == 1) \{$
+
+\hspace{.5 cm}$i = n$
+
+\hspace{.5 cm}$k = K$
+
+\hspace{.5 cm} while $(i>0 \&\& k>0) \{$
+
+\hspace{1 cm} if $(B[i-1, k-s_i] == 1) \{$
+
+\hspace{1.5 cm} $T = T \vee s_i$
+
+\hspace{1.5 cm} $k = k-s_i$
+
+\hspace{1 cm} $\}$
+
+\hspace{1 cm} $i = i-1$
+
+\hspace{.5 cm} $\}$
+
+$\}$
+
+return $T$
+
+\vfill
+\newpage
+
+\addtocounter{problemctr}{1}
+\bigskip
+\noindent
+$\underline{\rm Problem\ \theproblemctr}$ {\em Problem from Steve Skiena\/} \pp
+Consider the problem of storing $n$ books on shelves in a library. The order
+of the books is fixed by the cataloging system and so cannot be rearraged.
+Therefore, we can speak of a book $b_i$, where $1 \leq i \leq n$, that
+has a thickness $t_i$ and height $h_i$. The length of each bookshelf at this
+library is $L$.
+
+\noindent
+Suppose all the books have the same height $h$ (i.e.
+$h = h_i = h_j$ for all $i, j$) and the shelves are all separated by a
+distance of greater than $h$, so any book fits on any shelf. The greedy
+algorithm would fill the first shelf with as many books as we can
+until we get the smallest $i$ such that $b_i$ does not fit, and then
+repeat with subsequent shelves. Show that the greedy algorithm always finds
+the optimal shelf placement, and analyze the time complexity.
+
+
+
+\addtocounter{problemctr}{1}
+\bigskip
+\noindent
+$\underline{\rm Problem\ \theproblemctr}$ {\em Problem from Steve Skiena\/}\pp
+This is a generalization of the previous problem. Now consider the case
+where the height of the books is not constant, but we have the freedom
+to adjust the height of each shelf to that of the tallest book on the shelf.
+Thus the cost of a particular layout is the sum of the heights of the
+largest book on each shelf.
+
+\noindent
+(1) Give an example to show that the greedy algorithm of stuffing each
+shelf as full as possible does not always give the minimum overall
+height.
+
+\noindent
+(2) What technique should we use to solve this problem?
+
+\noindent
+(3) What are the subproblems?
+
+\noindent
+(4) How many subproblems are there?
+
+\noindent
+(5) Give an algorithm for this problem, and analyze its time complexity.
+
+
+
+
+\addtocounter{problemctr}{1}
+\bigskip
+\noindent
+$\underline{\rm Problem\ \theproblemctr}$\pp
+Suppose you are given three strings of characters: X, Y, and Z,
+where
+\begin{verbatim} |X| = n, |Y| = m, and |Z| = n+m.\end{verbatim}
+Z is said to be a shuffle of X and Y iff Z can be formed by interleaving the characters from
+X and Y in a
+way that maintains the left-to-right ordering of the characters from each
+string.
+
+\noindent(a) Show that cchocohilaptes is a shuffle of chocolate and chips,
+but chocochilatspe is not.
+
+\noindent(b) Give an efficient dynamic-programming algorithm that
+determines
+whether Z is a shuffle of X and Y.
+
+\noindent Hint: The values the dynamic programming matrix you construct
+should
+be Boolean, not numeric.
+
+
+\addtocounter{problemctr}{1}
+\bigskip
+\noindent
+$\underline{\rm Problem\ \theproblemctr}$\pp
+We play the following game once. 
+
+I have two distinct integers. I have chosen then \emph{arbitrarily}. 
+I flip a coin. On heads I show you the larger number. On tails, I show you the smaller number. You don't see the coin flip--just a single integer. Your task is to guess whether you've seen the larger number or the smaller number.
+You need to be correct with probability strictly greater than $1/2$. 
+
+This problem seems impossible, doesn't it? Remarkably it is solvable. 
+
+
+\iffalse
+
+
+\addtocounter{problemctr}{1}
+\bigskip
+\noindent
+$\underline{\rm Problem\ \theproblemctr}$\pp {\em From Cormen,
+Leiserson, Rivest,page 315\/}\pp Give an $O(n^2)$-time algorithm
+to find the longest monotonically increasing subsequence of a
+sequence of $n$ numbers.
+
+
+%  \medskip
+\addtocounter{problemctr}{1}
+\bigskip
+\noindent
+$\underline{\rm Problem\ \theproblemctr}$\pp
+{\em From Cormen,
+Leiserson, Rivest
+ (Extra Credit)\/}\pp
+Give an $O(n \log n)$-time algorithm to find the longest
+monotonically increasing subsequence of a sequence of $n$ numbers.
+({\em Hint:\/} Observe that the last element of a candidate
+subsequence of length $i$ is at least as large as the last element
+of a candidate subsequence of length $i - 1$. Maintain candidate
+subsequences by linking them through the input sequence.)\\
+
+
+\fi
+
+\iffalse
+
+\addtocounter{problemctr}{1}
+\bigskip
+\noindent
+$\underline{\rm Problem\ \theproblemctr}$\pp
+\pp
+In a small stadium there are several thousand people in the stands. Devise a
+distributed algorithm enabling the audience to count itself. Do not assume any
+particular geometry of the stadium, except, if you want, that it is bowl shaped.
+Explicitly state your assumptions, then present your algorithm and analysis.
+
+
+\fi
+
+
+
+\end{document}

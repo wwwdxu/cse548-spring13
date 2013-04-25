@@ -1,0 +1,464 @@
+\documentclass[11pt]{article}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\renewcommand{\baselinestretch}{1.2}
+\setlength{\topmargin}{-0.5in}
+\setlength{\textwidth}{6.5in}
+\setlength{\oddsidemargin}{0.0in}
+\setlength{\textheight}{9.1in}
+
+\newlength{\pagewidth}
+\setlength{\pagewidth}{6.5in}
+\pagestyle{empty}
+
+\def\pp{\par\noindent}
+
+\special{papersize=8.5in,11in}
+
+\begin{document}
+\centerline{\bf please don't grade}
+\medskip
+\hrule
+\bigskip
+\centerline{\bf CSE 548 -- Analysis of Algorithms, Spring 2013}
+\medskip
+\centerline{Assignment \#2a}
+\medskip
+\centerline{Duo Xu (\#108662210)}
+\medskip
+\centerline{partner: Yu-Yao Lin (\#109090793)}
+\bigskip
+\bigskip
+
+
+\newcounter{problemctr}
+
+\addtocounter{problemctr}{1}
+\bigskip
+\noindent
+$\underline{\rm Problem\ \theproblemctr}$\pp
+
+\noindent
+(a) In the class, we had the following divide and conquer algorithm,
+
+\medskip
+\includegraphics[scale=0.5]{h2a-p1.png}
+
+\medskip
+This algorithm is $O(n^3)$ time. The recurrence relation is $T(n) = 8T(n/2)+n^2$
+
+Now the two matrices are in disk. Using DAM model, the $N*N$ matrix becomes $\frac{N}{\sqrt{B}}*\frac{N}{\sqrt{B}}$ blocks. Then using the above algorithm, the difference is that we treat it as a new $\frac{N}{\sqrt{B}}*\frac{N}{\sqrt{B}}$ matrix, each element in this matrix is a block instead of a number. Thus compared to the above algorithm, the recurrence relation is 
+
+$T(N) = 8T(N/2)+\frac{N^2}{B}$. 
+
+$T(N) = \frac{N^2}{B}$ when $N \le \sqrt{B}$
+
+Thus we need $O((\frac{N}{\sqrt{B}})^3) = O(N^3/B^{3/2})$ memory transfers for a multiplication.
+
+\vfill
+\newpage
+\noindent
+(b)  The difference from (a) is the size of each element of the matrix, (a) is $\frac{N}{\sqrt{B}}*\frac{N}{\sqrt{B}}$, while (b) is $\frac{N}{\sqrt{M}}*\frac{N}{\sqrt{M}}$. Thus the recurrence relation is 
+
+$T(N) = 8T(N/2)+\frac{N^2}{B}$
+
+$T(N) = \frac{N^2}{B}$ when $N \le \sqrt{M}$
+
+In every recursion, the total memory transfers is the same as (a). However, as the size of each element is different, the total number of recursion is changed.
+
+Let $N = 2^l$ and $2^k = \sqrt{M}$, thus $2^{l-k} = \frac{N}{\sqrt{M}}$
+
+$T(2^l) = 8T(2^{l-1})+\frac{1}{B}*2^{2l}$ 
+
+\hspace{1.0 cm}$= 8(8T(2^{l-2})+\frac{1}{B}*2^{2(l-1)})+\frac{1}{B}*2^{2l}$
+
+\hspace{1.0 cm}$= 8^{2}T(2^{l-2})+\frac{1}{B}*2^{2l+1}+\frac{1}{B}*2^{2l}$
+
+\hspace{1.5 cm} \vdots
+
+\hspace{1.0 cm}$= 8^{l-k}T(2^{k})+\frac{1}{B}*2^{3l-k-1}+...+\frac{1}{B}*2^{2l}$
+
+\hspace{1.0 cm}$= O((\frac{N}{\sqrt{M}})^3*\frac{M}{B})$
+
+\hspace{1.0 cm}$= O(N^3/B\sqrt{M})$
+
+\vfill
+\newpage
+\addtocounter{problemctr}{1}
+\bigskip
+\noindent
+$\underline{\rm Problem\ \theproblemctr}$\pp 
+
+\noindent
+(1) $T(N) = 8T(N/2)+\frac{N^2}{B}$
+
+$T(N) = \frac{N^2}{B}$ when $N \le \sqrt{M}$
+
+\bigskip
+\bigskip
+\noindent
+(2) Let $N = 2^l$ and $2^k = \sqrt{M}$, thus $2^{l-k} = \frac{N}{\sqrt{M}}$
+
+$T(2^l) = 8T(2^{l-1})+\frac{1}{B}*2^{2l}$ 
+
+\hspace{1.0 cm}$= 8(8T(2^{l-2})+\frac{1}{B}*2^{2(l-1)})+\frac{1}{B}*2^{2l}$
+
+\hspace{1.0 cm}$= 8^{2}T(2^{l-2})+\frac{1}{B}*2^{2l+1}+\frac{1}{B}*2^{2l}$
+
+\hspace{1.5 cm} \vdots
+
+\hspace{1.0 cm}$= 8^{l-k}T(2^{k})+\frac{1}{B}*2^{3l-k-1}+...+\frac{1}{B}*2^{2l}$
+
+\hspace{1.0 cm}$= O((\frac{N}{\sqrt{M}})^3*\frac{M}{B})$
+
+\hspace{1.0 cm}$= O(N^3/B\sqrt{M})$
+
+\vfill
+\newpage
+\addtocounter{problemctr}{1}
+\bigskip
+\noindent
+$\underline{\rm Problem\ \theproblemctr}$\pp
+
+\noindent
+(1) $T(N) = 2T(N/2)+\frac{N}{B}$
+
+$T(N) = \frac{N}{B}$ when $N \le M$
+
+\bigskip
+\bigskip
+\noindent
+(2) Let $N = 2^l$ and $2^k = M$, thus $2^{l-k} = \frac{N}{M}$
+
+$T(2^l) = 2T(2^{l-1})+\frac{1}{B}*2^{l}$
+
+\hspace{1.0 cm}$= 2(2T(2^{l-2})+\frac{1}{B}*2^{l-1})+\frac{1}{B}*2^{l}$
+
+\hspace{1.0 cm}$= 2^{2}T(2^{l-2})+\frac{1}{B}*2^{l}+\frac{1}{B}*2^{l}$
+
+\hspace{1.5 cm} \vdots
+
+\hspace{1.0 cm}$= 2^{l-k}T(2^{k})+\frac{1}{B}*2^{l}+...+\frac{1}{B}*2^{l}$
+
+\hspace{1.0 cm}$= \frac{N}{M}*\frac{M}{B}+(l-k)*\frac{2^{l}}{B}$
+
+\hspace{1.0 cm}$= \frac{N}{B}+\frac{N}{B}*\lg \frac{N}{M}$
+
+\hspace{1.0 cm}$= O(\frac{N}{B}\log \frac{N}{M})$
+
+\vfill
+\newpage
+\addtocounter{problemctr}{1}
+\bigskip
+\noindent
+$\underline{\rm Problem\ \theproblemctr}$\pp
+
+\noindent
+(1) First, we check $a[0], a[1], a[2], a[4], a[8]...a[2^{k}]$, until $a[2^{k}]$ is 1. Then we do binary search between $a[2^{k-1}]$ and $a[2^{k}]$. The time complexity is $O(logn)$
+
+\bigskip
+\bigskip
+\noindent
+(2) First, we check $a[0], a[1], a[2], a[4], a[16]...a[2^{2^k}]$, until $a[2^{2^k}]$ is 1. Then we do this kind of search between $a[2^{2^{k-1}}]$ and $a[2^{2^k}]$. The time complexity is $O(loglogn)$
+
+\bigskip
+\bigskip
+\noindent
+(3) First, we check $a[0], a[1], a[2], a[4], a[256], a[256^256]...a[k], a[k^k]$, until $a[k^k]$ is 1. Then we do this kind of search between $a[k]$ and $a[k^k]$. This is faster than (2).
+
+\vfill
+\newpage
+\addtocounter{problemctr}{1}
+\bigskip
+\noindent
+$\underline{\rm Problem\ \theproblemctr}$
+
+\noindent
+Assign one prisoner to be the ``counter". He will count how many different prisoners have been put into the room.
+
+\noindent
+The rules are:
+
+1. If you are not the counter:
+
+   \hspace{1.0 cm}If the light is OFF, and you have never turned the light ON before, turn it ON.
+
+   \hspace{1.0 cm}If the light is ON, do nothing.
+
+2. If you are the counter:
+
+   \hspace{1.0 cm}If the light is OFF, do nothing.
+
+   \hspace{1.0 cm}If the light is ON, turn it OFF, and increase the counter by 1.
+
+   \hspace{1.0 cm}If counter = n, announce that all prisoners have visited.
+
+\bigskip
+Reference: \url{http://www.ocf.berkeley.edu/~wwu/papers/100prisonersLightBulb.pdf}
+
+
+
+
+
+% \subsection*{Circuits, Other Fun Stuff}
+
+% \addtocounter{problemctr}{1}
+% \bigskip
+% \noindent
+% $\underline{\rm Problem\ \theproblemctr}$\pp
+% In class we saw how to construct circuits for addition of two
+% $n$-bit numbers that
+% have depth of $O(\log n)$ and $O(1)$.  In this problem we look at
+% how to design circuits for multiplying.
+
+% \smallskip
+
+% \noindent
+% {\em Note:} You may assume that the \emph{size} of an addition circuit 
+% (both for standard and nonunique representation) is 
+% $\Theta(n)$. 
+
+% \smallskip
+
+% (a) Design a na\"{\i}ve circuit that has depth $O(\log ^2 n)$.
+% What is the size of this circuit?  Explain how to compute the size.
+
+% (b) Design a better circuit that has depth $O(\log n)$.
+% What is the size of this circuit?  Explain how to compute the size.
+
+
+
+% \addtocounter{problemctr}{1}
+% \bigskip
+% \noindent
+% $\underline{\rm Problem\ \theproblemctr}$\pp
+% In this problem, we continue working on multiplication circuits. The objective is to reduce the overall 
+% size of the multiplication circuits to something that is $o(n^2)$. 
+% \\
+% \emph{Hint:} please use Problem 5 of Problem Set 1 as a guide. 
+
+% (a) Please describe your construction algorithm and describe the depth of the circuit. 
+
+% (b) What is the recurrence relation for the size of your circuit? 
+
+% (c) Please solve this recurrence relation. 
+
+
+
+% \addtocounter{problemctr}{1}
+% \bigskip
+% \noindent
+% $\underline{\rm Problem\ \theproblemctr}$ {\em Fun, challenging problem}\pp
+% There are $N$ soldiers lined up, about to execute a hapless
+% prisoner. The lieutenant, who begins the firing process, is
+% located at one end of the line. The soldiers all want to fire
+% simultaneously. Unfortunately, the soldiers can only talk to their
+% immediate neighbors on the left and right. In addition, these
+% soldiers are not very intelligent and only have {\em constant
+% memory\/}, independent of $N$. Notice that constant memory is very
+% little. It is not enough even to count up to $N$; this requires
+% $\log (n)$ bits. It is not enough to have a name, because unique
+% names also require $\log (n)$ bits.
+
+% \noindent
+% Devise an algorithm that allows these soldiers to fire in unison. The
+% algorithm should have running time $O(n)$.
+
+% \noindent
+% Note that they move and interact at exactly
+% the same speed; i.e., they are synchronized.
+% \noindent
+% {\em Hint:\/} Use divide and conquer. You should assume soldiers all operate
+% at the same speed.
+
+
+
+
+% \addtocounter{problemctr}{1}
+% \bigskip
+% \noindent
+% $\underline{\rm Problem\ \theproblemctr}$\pp
+% You have an $n\times n$ checkerboard with an initial set of checkers
+% placed on it.  You are allowed to add additional checkers under the
+% following conditions: A can place checker on a square if two or more
+% neighboring squares also have checkers on them. Neighboring cells
+% are those above, below, to the left and to the right, as shown in
+% Figure~\ref{fig:checkerboard}. As we showed in class, there are
+% initial configurations of $n$ checkers that enable the entire board
+% to be covered. Prove that no configuration of $n-1$ checkers can let
+% you cover the board.
+% \smallskip
+
+% \noindent \emph{Hint:} this is not induction on the number of pieces.
+
+% \begin{figure}[h]
+%     \centering
+%         \includegraphics[width=0.80\textwidth]{checkerboard}
+%     \caption{Neighboring cells and checkerboard evolution.}
+%     \label{fig:checkerboard}
+% \end{figure}
+
+% \bigskip
+
+
+
+
+
+% \subsection*{Practice with Dynamic Programming}
+
+
+
+
+
+% \addtocounter{problemctr}{1}
+% \bigskip
+% \noindent
+% $\underline{\rm Problem\ \theproblemctr}$\pp Consider the knapsock
+% problem discussed in class: For set $S = \{ s_1, s_2, \cdots, s_n
+% \} $ of integers and target integer K, is there a subset $T
+% \subseteq S$, such that $$ \sum_{t_i \in T} t_i = K ?$$
+
+% \noindent (1) Recall the algorithm from class. Provide the
+% subproblems, then present pseudocode from class.
+
+% \noindent (2) The algorithm from (1) only answers the question
+% with a yes or no. What part of the algorithm would we modify so
+% that we can compute the set T? What are the modifications?
+
+% \addtocounter{problemctr}{1}
+% \bigskip
+% \noindent
+% $\underline{\rm Problem\ \theproblemctr}$ {\em Problem from Steve Skiena\/} \pp
+% Consider the problem of storing $n$ books on shelves in a library. The order
+% of the books is fixed by the cataloging system and so cannot be rearraged.
+% Therefore, we can speak of a book $b_i$, where $1 \leq i \leq n$, that
+% has a thickness $t_i$ and height $h_i$. The length of each bookshelf at this
+% library is $L$.
+
+% \noindent
+% Suppose all the books have the same height $h$ (i.e.
+% $h = h_i = h_j$ for all $i, j$) and the shelves are all separated by a
+% distance of greater than $h$, so any book fits on any shelf. The greedy
+% algorithm would fill the first shelf with as many books as we can
+% until we get the smallest $i$ such that $b_i$ does not fit, and then
+% repeat with subsequent shelves. Show that the greedy algorithm always finds
+% the optimal shelf placement, and analyze the time complexity.
+
+
+
+% \addtocounter{problemctr}{1}
+% \bigskip
+% \noindent
+% $\underline{\rm Problem\ \theproblemctr}$ {\em Problem from Steve Skiena\/}\pp
+% This is a generalization of the previous problem. Now consider the case
+% where the height of the books is not constant, but we have the freedom
+% to adjust the height of each shelf to that of the tallest book on the shelf.
+% Thus the cost of a particular layout is the sum of the heights of the
+% largest book on each shelf.
+
+% \noindent
+% (1) Give an example to show that the greedy algorithm of stuffing each
+% shelf as full as possible does not always give the minimum overall
+% height.
+
+% \noindent
+% (2) What technique should we use to solve this problem?
+
+% \noindent
+% (3) What are the subproblems?
+
+% \noindent
+% (4) How many subproblems are there?
+
+% \noindent
+% (5) Give an algorithm for this problem, and analyze its time complexity.
+
+
+
+
+% \addtocounter{problemctr}{1}
+% \bigskip
+% \noindent
+% $\underline{\rm Problem\ \theproblemctr}$\pp
+% Suppose you are given three strings of characters: X, Y, and Z,
+% where
+% \begin{verbatim} |X| = n, |Y| = m, and |Z| = n+m.\end{verbatim}
+% Z is said to be a shuffle of X and Y iff Z can be formed by interleaving the characters from
+% X and Y in a
+% way that maintains the left-to-right ordering of the characters from each
+% string.
+
+% \noindent(a) Show that cchocohilaptes is a shuffle of chocolate and chips,
+% but chocochilatspe is not.
+
+% \noindent(b) Give an efficient dynamic-programming algorithm that
+% determines
+% whether Z is a shuffle of X and Y.
+
+% \noindent Hint: The values the dynamic programming matrix you construct
+% should
+% be Boolean, not numeric.
+
+
+% \addtocounter{problemctr}{1}
+% \bigskip
+% \noindent
+% $\underline{\rm Problem\ \theproblemctr}$\pp
+% We play the following game once. 
+
+% I have two distinct integers. I have chosen then \emph{arbitrarily}. 
+% I flip a coin. On heads I show you the larger number. On tails, I show you the smaller number. You don't see the coin flip--just a single integer. Your task is to guess whether you've seen the larger number or the smaller number.
+% You need to be correct with probability strictly greater than $1/2$. 
+
+% This problem seems impossible, doesn't it? Remarkably it is solvable. 
+
+
+% \iffalse
+
+
+% \addtocounter{problemctr}{1}
+% \bigskip
+% \noindent
+% $\underline{\rm Problem\ \theproblemctr}$\pp {\em From Cormen,
+% Leiserson, Rivest,page 315\/}\pp Give an $O(n^2)$-time algorithm
+% to find the longest monotonically increasing subsequence of a
+% sequence of $n$ numbers.
+
+
+% %  \medskip
+% \addtocounter{problemctr}{1}
+% \bigskip
+% \noindent
+% $\underline{\rm Problem\ \theproblemctr}$\pp
+% {\em From Cormen,
+% Leiserson, Rivest
+%  (Extra Credit)\/}\pp
+% Give an $O(n \log n)$-time algorithm to find the longest
+% monotonically increasing subsequence of a sequence of $n$ numbers.
+% ({\em Hint:\/} Observe that the last element of a candidate
+% subsequence of length $i$ is at least as large as the last element
+% of a candidate subsequence of length $i - 1$. Maintain candidate
+% subsequences by linking them through the input sequence.)\\
+
+
+% \fi
+
+% \iffalse
+
+% \addtocounter{problemctr}{1}
+% \bigskip
+% \noindent
+% $\underline{\rm Problem\ \theproblemctr}$\pp
+% \pp
+% In a small stadium there are several thousand people in the stands. Devise a
+% distributed algorithm enabling the audience to count itself. Do not assume any
+% particular geometry of the stadium, except, if you want, that it is bowl shaped.
+% Explicitly state your assumptions, then present your algorithm and analysis.
+
+
+% \fi
+
+
+
+\end{document}
