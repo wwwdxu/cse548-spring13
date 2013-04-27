@@ -4,6 +4,7 @@
 \usepackage{graphicx}
 \usepackage{latexsym}
 \usepackage{hyperref}
+\usepackage{color}
 
 
 \renewcommand{\baselinestretch}{1.2}
@@ -110,76 +111,130 @@ return $T$
 \addtocounter{problemctr}{1}
 \bigskip
 \noindent
-$\underline{\rm Problem\ \theproblemctr}$ {\em Problem from Steve Skiena\/} \pp
-Consider the problem of storing $n$ books on shelves in a library. The order
-of the books is fixed by the cataloging system and so cannot be rearraged.
-Therefore, we can speak of a book $b_i$, where $1 \leq i \leq n$, that
-has a thickness $t_i$ and height $h_i$. The length of each bookshelf at this
-library is $L$.
-
+$\underline{\rm Problem\ \theproblemctr}$ \pp
 \noindent
-Suppose all the books have the same height $h$ (i.e.
-$h = h_i = h_j$ for all $i, j$) and the shelves are all separated by a
-distance of greater than $h$, so any book fits on any shelf. The greedy
-algorithm would fill the first shelf with as many books as we can
-until we get the smallest $i$ such that $b_i$ does not fit, and then
-repeat with subsequent shelves. Show that the greedy algorithm always finds
-the optimal shelf placement, and analyze the time complexity.
+Assume greedy is not optimal solution. 
 
+Then there exists an algorithm A which is better than greedy.
 
+Consider A is the same as greedy for longest prefix of books. That is greedy and A has some prefix which is similar. By this we mean longest number of shelves.
 
-\addtocounter{problemctr}{1}
+Now we make A' which has C22 in above shelf. A' is the same as A but it agrees with greedy for 1 more book. Because there are still enough space to put C22 in above shelf, in order to keep "longest prefix" true, we should put C22 in above shelf, which causes a contradiction.
+
+Thus greedy is the optimal solution.
+
+The time complexity is $O(n)$.
+
 \bigskip
-\noindent
-$\underline{\rm Problem\ \theproblemctr}$ {\em Problem from Steve Skiena\/}\pp
-This is a generalization of the previous problem. Now consider the case
-where the height of the books is not constant, but we have the freedom
-to adjust the height of each shelf to that of the tallest book on the shelf.
-Thus the cost of a particular layout is the sum of the heights of the
-largest book on each shelf.
+\includegraphics[scale=0.5]{h2c-p1.png}
 
-\noindent
-(1) Give an example to show that the greedy algorithm of stuffing each
-shelf as full as possible does not always give the minimum overall
-height.
-
-\noindent
-(2) What technique should we use to solve this problem?
-
-\noindent
-(3) What are the subproblems?
-
-\noindent
-(4) How many subproblems are there?
-
-\noindent
-(5) Give an algorithm for this problem, and analyze its time complexity.
-
-
-
-
+\vfill
+\newpage
 \addtocounter{problemctr}{1}
 \bigskip
 \noindent
 $\underline{\rm Problem\ \theproblemctr}$\pp
-Suppose you are given three strings of characters: X, Y, and Z,
-where
-\begin{verbatim} |X| = n, |Y| = m, and |Z| = n+m.\end{verbatim}
-Z is said to be a shuffle of X and Y iff Z can be formed by interleaving the characters from
-X and Y in a
-way that maintains the left-to-right ordering of the characters from each
-string.
+\noindent
+(1) Consider there are $3$ books. $b_1$ with $t_1 = 1$ and $h_1=1$, $b_2$ with $t_2 = 1$ and $h_2 = 2$ and $b_3$ with $t_3 = 1$ and $h_3 = 2$. The length L of the shelf is $2$. So greedy will put $b_1$ and $b_2$ in the first shelf and $b_3$ in the second shelf. The total cost is $4$. However, the optimal solution is to put $b_1$ in the first shelf while $b_2$ and $b_3$ are in the second shelf. The total cost is $3$.  
 
-\noindent(a) Show that cchocohilaptes is a shuffle of chocolate and chips,
-but chocochilatspe is not.
+\bigskip
+\bigskip
+\noindent
+(2) Dynamic programming.
 
-\noindent(b) Give an efficient dynamic-programming algorithm that
-determines
-whether Z is a shuffle of X and Y.
+\bigskip
+\bigskip
+\noindent
+(3) We define subproblems by going backwards. Assuming there are $n$ books, subproblems are what is the minimum overall height of the bookshelf layout if we only place books $i$ through $n$ onto the shelves.
 
-\noindent Hint: The values the dynamic programming matrix you construct
-should
-be Boolean, not numeric.
+\bigskip
+\bigskip
+\noindent
+(4) As there are $n$ books, thus there are $n$ subproblems.
+
+\bigskip
+\bigskip
+\noindent
+(5) We define $cost[i]$ as the minimum overall height of placing books $i$ through $n$ onto the shelves. There are generally two choices: one is to put the book on the current shelf and the other is to put the book on the new shelf. For the first case, if placing the current book on the current shelf exceeds the length of the shelf, we say $L$, then we only have the choice to put it on the new shelf.
+
+$cost[i] = min \{cost[i+k]+max\{H[i],..,H[i+k-1]\}\}$ where $1 \le k \le m$
+
+$H[i]$ stands for the height of the $i_{th}$ book. $T[i]$ stands for the thickness of the $i_{th}$ book. $m$ satisfied $\sum_{q=i}^{m} T[q] \le L$ for each $i$, which stands for the maximum index of the book to place on the same shelf starting from the $i_{th}$ book.
+
+The base case is $cost[n] = H[n]$, which means only placing the $n_{th}$ book onto the shelf will only cost the height of the $n_{th}$ book.
+
+Thus $cost[1]$ represents the final solution, the minimum cost of placing books $1$ through $n$ onto the shelves.
+
+\bigskip
+Pseudocode:
+
+$cost[n] = H[n]$
+
+for $i = n-1$ downto $1$
+
+\hspace{.5 cm}$currentlen = T[i]$
+
+\hspace{.5 cm}for $j = i+1$ to $n$
+
+\hspace{1 cm}$currentlen = currentlen+T[j]$
+
+\hspace{1 cm}if $(currentlen \le L)$ and $(max\{H[i],...,H[j]\}+cost[j+1] \le cost[i])$
+
+\hspace{1.5 cm}$cost[i] = max\{H[i],...,H[j]\}+cost[j+1]$
+
+return $cost[1]$
+
+\bigskip
+
+Assuming $max\{H[i],...,H[j]\}$ is $O(1)$ time, inside the outer loop, we can keep a variable to track the largest height between $H[i]$ and $H[j]$, then the time complexity is $O(n^2)$.
+
+
+\vfill
+\newpage
+\addtocounter{problemctr}{1}
+\bigskip
+\noindent
+$\underline{\rm Problem\ \theproblemctr}$\pp
+\noindent
+(a) \textcolor{red}{c}ch\textcolor{red}{hi}la\textcolor{red}{p}te\textcolor{red}{s}.
+
+In chocochilatspe, "sp" is in different order from "ps" in chips.
+
+\bigskip
+\bigskip
+\noindent 
+(b) We can create a $(n+1)*(m+1)$ matrix to store the state (true or false). $M[i][j]$ represents whether the prefix string $Z[1...i+j]$ is a shuffle of prefix $X[1...i]$ and prefix $Y[1...j]$.
+
+The equation is $M[i][j] = ((Z[i+j] == X[i]) \&\& M[i - 1][j]) || ((Z[i+j] == Y[j]) \&\& M[i][j - 1])$. It means if $Z$ is a shuffle of $X$ and $Y$, one case is the last char of $Z$ equals $X$'s last char and whether $Z[1...i+j-1]$ is a shuffle of $X[1...i-1]$ and $Y[1...j]$, and the other case is the last char of $Z$ equals $Y$'s last char and whether $Z[1..i+j-1]$ is a shuffle of $X[1..i]$ and $Y[1...j-1]$. Either of the two is OK.
+
+\bigskip
+\noindent
+Pseudocode:
+
+boolean $M[n+1][m+1]$
+
+for $i = 0$ to $n$
+
+\hspace{.5 cm} // M[i][0] means whether Z[1...i] is a shuffle of prefix X[1...i], which is definitely true
+
+\hspace{.5 cm} $M[i][0] = true$
+
+for $j = 0$ to $m$
+
+\hspace{.5 cm} // M[0][j] means whether Z[1...j] is a shuffle of prefix Y[1...j], which is definitely true
+
+\hspace{.5 cm} $M[0][j] = true$
+
+for $i = 1$ to $n$
+
+\hspace{.5 cm} for $j = 1$ to $m$
+
+\hspace{1 cm} $M[i][j] = ((Z[i+j] == X[i]) \&\& M[i - 1][j]) || ((Z[i+j] == Y[j]) \&\& M[i][j - 1])$
+
+return $M[n][m]$
+
+
+
 
 \vfill
 \newpage
